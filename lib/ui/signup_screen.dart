@@ -1,17 +1,14 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widget_previews.dart';
-import 'package:journal_app/app_strings.dart';
-import 'package:journal_app/routes.dart';
+import '../app_strings.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class SignupScreen extends StatefulWidget {
+  const SignupScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<SignupScreen> createState() => _SignupScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignupScreenState extends State<SignupScreen> {
   @override
   Widget build(BuildContext context) {
     final TextTheme textTheme = Theme.of(context).textTheme;
@@ -27,19 +24,19 @@ class _LoginScreenState extends State<LoginScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                AppStrings.welcome,
+                AppStrings.createAccount,
                 style: textTheme.bodyLarge?.copyWith(fontSize: 30.0),
               ),
-      
+
               const SizedBox(height: 15),
-      
+
               Text(
-                AppStrings.settle,
+                AppStrings.stepInto,
                 style: textTheme.bodyMedium?.copyWith(fontSize: 18),
               ),
-      
+
               const SizedBox(height: 20),
-      
+
               TextField(
                 autocorrect: false,
                 enableSuggestions: false,
@@ -50,9 +47,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
               ),
-      
+
               const SizedBox(height: 20),
-      
+
               TextField(
                 obscureText: isObscurePassword,
                 autocorrect: false,
@@ -64,7 +61,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   suffixIcon: IconButton(
                     icon: Icon(
-                      isObscurePassword ? Icons.visibility : Icons.visibility_off,
+                      isObscurePassword
+                          ? Icons.visibility
+                          : Icons.visibility_off,
                     ),
                     onPressed: () => {
                       setState(() {
@@ -74,20 +73,20 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
               ),
-      
+
               const SizedBox(height: 20),
-      
+
               SizedBox(
                 width: double.infinity,
                 height: 50.0,
                 child: FilledButton(
                   onPressed: () => {},
-                  child: Text(AppStrings.login),
+                  child: Text(AppStrings.signUp),
                 ),
               ),
-      
+
               const SizedBox(height: 20),
-      
+
               Row(
                 children: [
                   const Expanded(child: Divider()),
@@ -98,28 +97,18 @@ class _LoginScreenState extends State<LoginScreen> {
                   const Expanded(child: Divider()),
                 ],
               ),
-      
+
               const SizedBox(height: 20),
-      
+
               Center(
-                child: Text.rich(
-                  TextSpan(
-                    text: AppStrings.newHere,
-                    style: textTheme.bodyMedium?.copyWith(fontSize: 15),
-                    children: [
-                      TextSpan(
-                        text: "  ${AppStrings.createAnAccount}",
-                        style: textTheme.bodyMedium?.copyWith(
-                          color: colors.primary,
-                          fontSize: 15,
-                        ),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () {
-                            Navigator.pushNamed(context, Routes.signUp);
-                          },
-                      ),
-                    ],
+                child: GestureDetector(
+                  child: Text(
+                    AppStrings.alreadyHaveAccount,
+                    style: textTheme.bodyMedium?.copyWith(color: colors.primary, fontSize: 15),
                   ),
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
                 ),
               ),
             ],
@@ -128,9 +117,4 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
-}
-
-@Preview()
-Widget loginScreenPreview() {
-  return const MaterialApp(home: Scaffold(body: LoginScreen()));
 }
