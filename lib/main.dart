@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:journal_app/routes.dart';
 import 'package:journal_app/theme.dart';
+import 'package:journal_app/ui/login_screen.dart';
+import 'package:journal_app/ui/signup_screen.dart';
 import 'package:journal_app/util.dart';
 
 void main() {
@@ -18,15 +21,12 @@ class MainApp extends StatelessWidget {
     MaterialTheme materialTheme = MaterialTheme(textTheme);
 
     return MaterialApp(
-      theme: brightness == Brightness.light ? materialTheme.light() : materialTheme.dark(),
-      home: Scaffold(
-        body: Center(
-          child: FilledButton(
-            onPressed: () => {print('Button Clicked')},
-            child: const Text('Hello World!'),
-          ),
-        ),
-      ),
+      routes: {
+        Routes.login: (context) => const LoginScreen(),
+        Routes.signUp: (context) => const SignupScreen(),
+      },
+      theme: brightness == Brightness.light ? materialTheme.light() : materialTheme.light(),
+      home: const LoginScreen(),
     );
   }
 }
