@@ -1,11 +1,13 @@
 import 'package:flutter/widgets.dart';
 import 'package:journal_app/data/repositories/auth_repository.dart';
+import 'package:journal_app/data/services/local_storage_service.dart';
 import 'package:journal_app/network/api_status.dart';
 
 class AuthViewModel extends ChangeNotifier {
-  AuthViewModel(this._authRepository);
+  AuthViewModel(this._authRepository, this._localStorageService);
 
   final AuthRepository _authRepository;
+  final LocalStorageService _localStorageService;
 
   ApiStatus _signupApiStatus = ApiStatus.initial;
 
@@ -66,7 +68,17 @@ class AuthViewModel extends ChangeNotifier {
     );
 
     if (result.isSuccess) {
-      print('Received token: ${result.data}');
+      final token = result.data;
+      if (token == null || token.isEmpty) {
+        _loginApiStatus = ApiStatus.error;
+        _loginErrorMessage = 'Login succeeded but token was not returned.';
+        notifyListeners();
+        return false;
+      }
+
+      await _localStorageService.saveAuthToken(token);
+      await _localStorageService.setIsLoggedIn(true);
+      await _localStorageService.setUserName(userName);
       _loginApiStatus = ApiStatus.success;
       notifyListeners();
       return true;
@@ -76,5 +88,14 @@ class AuthViewModel extends ChangeNotifier {
       notifyListeners();
       return false;
     }
+  }
+
+  Future<void> logout() async {
+    await _localStorageService.clearAuthSession();
+    _loginApiStatus = ApiStatus.initial;
+    _signupApiStatus = ApiStatus.initial;
+    _loginErrorMessage = null;
+    _signUpErrorMessage = null;
+    notifyListeners();
   }
 }
