@@ -3,6 +3,7 @@ import 'package:journal_app/data/repositories/home_repository.dart';
 import 'package:journal_app/network/dio_client.dart';
 import 'package:journal_app/data/services/local_storage_service.dart';
 import 'package:journal_app/presentation/ui/homescreen/home_screen.dart';
+import 'package:journal_app/presentation/ui/profile_screen.dart';
 import 'package:journal_app/presentation/viewmodels/auth_viewmodel.dart';
 import 'package:journal_app/presentation/viewmodels/home_viewmodel.dart';
 import 'package:journal_app/routes.dart';
@@ -67,6 +68,7 @@ class MainApp extends StatelessWidget {
           Routes.login: (context) => const LoginScreen(),
           Routes.signUp: (context) => const SignupScreen(),
           Routes.home: (context) => const HomeScreen(),
+          Routes.profile: (context) => const ProfileScreen(),
         },
         theme: brightness == Brightness.light
             ? materialTheme.light()
