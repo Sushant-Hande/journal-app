@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:journal_app/data/repositories/home_repository.dart';
 import 'package:journal_app/network/dio_client.dart';
 import 'package:journal_app/data/services/local_storage_service.dart';
-import 'package:journal_app/presentation/ui/home_screen.dart';
+import 'package:journal_app/presentation/ui/homescreen/home_screen.dart';
 import 'package:journal_app/presentation/viewmodels/auth_viewmodel.dart';
+import 'package:journal_app/presentation/viewmodels/home_viewmodel.dart';
 import 'package:journal_app/routes.dart';
 import 'package:journal_app/theme.dart';
 import 'package:journal_app/presentation/ui/login_screen.dart';
@@ -12,6 +14,7 @@ import 'package:provider/provider.dart';
 
 import 'data/repositories/auth_repository.dart';
 import 'data/services/auth_api_service.dart';
+import 'data/services/home_api_service.dart';
 
 void main() {
   runApp(const MainApp());
@@ -24,22 +27,37 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final brightness = View.of(context).platformDispatcher.platformBrightness;
     // Use with Google Fonts package to use downloadable fonts
-    TextTheme textTheme = createTextTheme(context, "Roboto", "Montserrat");
+    TextTheme textTheme = createTextTheme(context, "Montserrat", "Montserrat");
     MaterialTheme materialTheme = MaterialTheme(textTheme);
 
     return MultiProvider(
       providers: [
-        Provider(create: (_) => createDioClient()),
+        Provider<LocalStorageService>(create: (_) => LocalStorageService()),
+        Provider(
+          create: (context) =>
+              createDioClient(context.read<LocalStorageService>()),
+        ),
         Provider<AuthApiService>(
           create: (context) => AuthApiService(context.read()),
         ),
-        Provider<LocalStorageService>(create: (_) => LocalStorageService()),
         Provider<AuthRepository>(
           create: (context) => AuthRepository(context.read()),
         ),
         ChangeNotifierProvider<AuthViewModel>(
           create: (context) => AuthViewModel(
             context.read<AuthRepository>(),
+            context.read<LocalStorageService>(),
+          ),
+        ),
+        Provider<HomeApiService>(
+          create: (context) => HomeApiService(context.read()),
+        ),
+        Provider<HomeRepository>(
+          create: (context) => HomeRepository(context.read()),
+        ),
+        ChangeNotifierProvider<HomeViewmodel>(
+          create: (context) => HomeViewmodel(
+            context.read<HomeRepository>(),
             context.read<LocalStorageService>(),
           ),
         ),
@@ -82,9 +100,7 @@ class _AuthGateState extends State<AuthGate> {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Scaffold(
-            body: Center(
-              child: CircularProgressIndicator(),
-            ),
+            body: Center(child: CircularProgressIndicator()),
           );
         }
 
@@ -98,4 +114,3 @@ class _AuthGateState extends State<AuthGate> {
     );
   }
 }
-
