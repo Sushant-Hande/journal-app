@@ -6,9 +6,7 @@ import '../../data/repositories/home_repository.dart';
 import '../../network/api_status.dart';
 
 class HomeViewmodel extends ChangeNotifier {
-  HomeViewmodel(this._homeRepository, this._localStorageService) {
-    getJournals();
-  }
+  HomeViewmodel(this._homeRepository, this._localStorageService);
 
   final HomeRepository _homeRepository;
   final LocalStorageService _localStorageService;

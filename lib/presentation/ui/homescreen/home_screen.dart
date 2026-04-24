@@ -41,6 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
               onSelected: (value) async {
                 switch (value) {
                   case 'profile':
+                    Navigator.of(context).pushNamed(Routes.profile);
                     break;
 
                   case 'logout':
