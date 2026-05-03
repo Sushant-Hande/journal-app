@@ -84,15 +84,19 @@ flutter test
 
 ## Screenshots
 
-The following screenshots are available in the `screenshots/` folder:
+The following screenshots are available in the `screenshots/` folder. The table below uses two columns so images display side-by-side. Images are sized smaller so at least two fit horizontally.
 
-| Screenshot  | Preview                                            |
-|-------------|----------------------------------------------------|
-| Login       | ![Login screen](screenshots/login.png)             |
-| Sign up     | ![Sign up screen](screenshots/signup.png)          |
-| Home        | ![Home screen](screenshots/home.png)               |
-| Add journal | ![Add journal screen](screenshots/add-journal.png) |
-| Profile     | ![Profile screen](screenshots/profile.png)         |
+| Login | Sign up |
+| --- | --- |
+| <img src="screenshots/login.png" width="300" alt="Login screen" /> | <img src="screenshots/signup.png" width="300" alt="Sign up screen" /> |
+
+| Home | Add journal |
+| --- | --- |
+| <img src="screenshots/home.png" width="300" alt="Home screen" /> | <img src="screenshots/add-journal.png" width="300" alt="Add journal screen" /> |
+
+| Profile |  |
+| --- | --- |
+| <img src="screenshots/profile.png" width="300" alt="Profile screen" /> |  |
 
 ## Notes
 
