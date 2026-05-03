@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:journal_app/app_strings.dart';
 import 'package:journal_app/presentation/viewmodels/auth_viewmodel.dart';
 import 'package:journal_app/presentation/viewmodels/home_viewmodel.dart';
+import 'package:journal_app/data/models/journal_entry.dart';
 import 'package:provider/provider.dart';
-
 import '../../../routes.dart';
 import 'favorites_tab.dart';
 import 'home_tab.dart';
@@ -21,6 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
     final vm = context.read<AuthViewModel>();
+    final homeVM = context.read<HomeViewmodel>();
 
     return SafeArea(
       child: Scaffold(
@@ -65,7 +67,18 @@ class _HomeScreenState extends State<HomeScreen> {
         floatingActionButton: Padding(
           padding: const EdgeInsets.only(bottom: 20.0),
           child: FloatingActionButton(
-            onPressed: () {},
+            onPressed: () async {
+              // Open add journal screen and wait for the created JournalEntry.
+              final result = await Navigator.pushNamed(
+                context,
+                Routes.addJournal,
+              );
+
+              // If a JournalEntry was returned, add it to HomeViewmodel so UI updates immediately.
+              if (result is JournalEntry) {
+                homeVM.addJournalEntry(result);
+              }
+            },
             child: const Icon(Icons.add),
           ),
         ),
@@ -82,12 +95,12 @@ class _HomeScreenState extends State<HomeScreen> {
             BottomNavigationBarItem(
               icon: Icon(Icons.home_outlined),
               activeIcon: Icon(Icons.home),
-              label: 'Home',
+              label: AppStrings.home,
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.favorite_border),
               activeIcon: Icon(Icons.favorite),
-              label: 'Favorites',
+              label: AppStrings.favorites,
             ),
           ],
         ),

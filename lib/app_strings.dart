@@ -12,4 +12,9 @@ class AppStrings {
   static const String createAccount = "Create Account";
   static const String stepInto = "Step into your new digital journal.";
   static const String alreadyHaveAccount = "Already have an account? Back to Login";
+  static const String titleYourJournal = "Title your journal";
+  static const String beginYourReflectionHere = "Begin your reflection here";
+  static const String addJournal = "Add Journal";
+  static const String home = "Home";
+  static const String favorites = "Favorites";
 }
