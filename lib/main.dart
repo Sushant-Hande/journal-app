@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:journal_app/data/repositories/add_journal_repository.dart';
 import 'package:journal_app/data/repositories/home_repository.dart';
+import 'package:journal_app/data/services/add_journal_service.dart';
 import 'package:journal_app/network/dio_client.dart';
 import 'package:journal_app/data/services/local_storage_service.dart';
+import 'package:journal_app/presentation/ui/add_journal_screen.dart';
 import 'package:journal_app/presentation/ui/homescreen/home_screen.dart';
 import 'package:journal_app/presentation/ui/profile_screen.dart';
+import 'package:journal_app/presentation/viewmodels/add_journal_viewmodel.dart';
 import 'package:journal_app/presentation/viewmodels/auth_viewmodel.dart';
 import 'package:journal_app/presentation/viewmodels/home_viewmodel.dart';
 import 'package:journal_app/routes.dart';
@@ -62,6 +66,16 @@ class MainApp extends StatelessWidget {
             context.read<LocalStorageService>(),
           ),
         ),
+        Provider<AddJournalService>(
+          create: (context) => AddJournalService(context.read()),
+        ),
+        Provider<AddJournalRepository>(
+          create: (context) => AddJournalRepository(context.read()),
+        ),
+        ChangeNotifierProvider<AddJournalViewmodel>(
+          create: (context) =>
+              AddJournalViewmodel(context.read<AddJournalRepository>(), context.read<LocalStorageService>()),
+        ),
       ],
       child: MaterialApp(
         routes: {
@@ -69,6 +83,7 @@ class MainApp extends StatelessWidget {
           Routes.signUp: (context) => const SignupScreen(),
           Routes.home: (context) => const HomeScreen(),
           Routes.profile: (context) => const ProfileScreen(),
+          Routes.addJournal: (context) => const AddJournalScreen(),
         },
         theme: brightness == Brightness.light
             ? materialTheme.light()

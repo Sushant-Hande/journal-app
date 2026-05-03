@@ -1,4 +1,4 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/foundation.dart';
 import 'package:journal_app/data/repositories/auth_repository.dart';
 import 'package:journal_app/data/services/local_storage_service.dart';
 import 'package:journal_app/network/api_status.dart';
