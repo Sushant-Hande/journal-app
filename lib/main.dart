@@ -5,11 +5,10 @@ import 'package:journal_app/data/services/add_journal_service.dart';
 import 'package:journal_app/network/dio_client.dart';
 import 'package:journal_app/data/services/local_storage_service.dart';
 import 'package:journal_app/presentation/ui/add_journal_screen.dart';
-import 'package:journal_app/presentation/ui/homescreen/home_screen.dart';
+import 'package:journal_app/presentation/ui/homescreen/home_screen_wrapper.dart';
 import 'package:journal_app/presentation/ui/profile_screen.dart';
 import 'package:journal_app/presentation/viewmodels/add_journal_viewmodel.dart';
 import 'package:journal_app/presentation/viewmodels/auth_viewmodel.dart';
-import 'package:journal_app/presentation/viewmodels/home_viewmodel.dart';
 import 'package:journal_app/routes.dart';
 import 'package:journal_app/theme.dart';
 import 'package:journal_app/presentation/ui/login_screen.dart';
@@ -60,12 +59,6 @@ class MainApp extends StatelessWidget {
         Provider<HomeRepository>(
           create: (context) => HomeRepository(context.read()),
         ),
-        ChangeNotifierProvider<HomeViewmodel>(
-          create: (context) => HomeViewmodel(
-            context.read<HomeRepository>(),
-            context.read<LocalStorageService>(),
-          ),
-        ),
         Provider<AddJournalService>(
           create: (context) => AddJournalService(context.read()),
         ),
@@ -81,7 +74,7 @@ class MainApp extends StatelessWidget {
         routes: {
           Routes.login: (context) => const LoginScreen(),
           Routes.signUp: (context) => const SignupScreen(),
-          Routes.home: (context) => const HomeScreen(),
+          Routes.home: (context) => const HomeScreenWrapper(),
           Routes.profile: (context) => const ProfileScreen(),
           Routes.addJournal: (context) => const AddJournalScreen(),
         },
@@ -123,7 +116,7 @@ class _AuthGateState extends State<AuthGate> {
 
         final token = snapshot.data;
         if (token != null && token.isNotEmpty) {
-          return const HomeScreen();
+          return const HomeScreenWrapper();
         }
 
         return const LoginScreen();

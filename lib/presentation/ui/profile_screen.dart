@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:journal_app/app_strings.dart';
 import 'package:journal_app/data/services/local_storage_service.dart';
 import 'package:provider/provider.dart';
 
@@ -133,6 +134,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   icon: const Icon(Icons.refresh),
                   label: const Text('Refresh'),
                 ),
+
+                const SizedBox(height: 12),
+
+                Center(child: Text(AppStrings.appVersion, style: TextStyle(fontSize: 12),))
               ],
             );
           },
