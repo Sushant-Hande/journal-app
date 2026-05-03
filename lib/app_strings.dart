@@ -17,4 +17,5 @@ class AppStrings {
   static const String addJournal = "Add Journal";
   static const String home = "Home";
   static const String favorites = "Favorites";
+  static const String appVersion = "Version 1.0.0";
 }
