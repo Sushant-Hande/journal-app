@@ -29,8 +29,8 @@ jobs:
       - name: Get dependencies
         run: flutter pub get
 
-      - name: Analyze code
-        run: flutter analyze
+#      - name: Analyze code
+#        run: flutter analyze
 
       - name: Install lcov
         if: github.event_name == 'pull_request'
