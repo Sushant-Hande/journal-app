@@ -219,7 +219,8 @@ jobs:
             cmake \
             ninja-build \
             libblkid-dev \
-            liblzma-dev
+            liblzma-dev \
+            libsecret-1-dev
 
       - name: Get dependencies
         run: flutter pub get
