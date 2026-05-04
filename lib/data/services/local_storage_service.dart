@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -50,15 +51,58 @@ class LocalStorageService {
 
   // ---------- flutter_secure_storage ----------
   Future<void> saveAuthToken(String token) async {
-    await _secureStorage.write(key: _authTokenKey, value: token);
+    try {
+      await _secureStorage.write(key: _authTokenKey, value: token);
+    } catch (e) {
+      debugPrint('Warning: Failed to save auth token to secure storage: $e');
+      // On web/desktop, secure storage might throw PlatformException
+      // Fall back to regular SharedPreferences
+      try {
+        final prefs = await _prefs;
+        await prefs.setString(_authTokenKey, token);
+      } catch (fallbackError) {
+        debugPrint('Error: Failed to save auth token to SharedPreferences: $fallbackError');
+        rethrow;
+      }
+    }
   }
 
   Future<String?> getAuthToken() async {
-    return _secureStorage.read(key: _authTokenKey);
+    try {
+      final token = await _secureStorage.read(key: _authTokenKey);
+      if (token != null && token.isNotEmpty) {
+        return token;
+      }
+    } catch (e) {
+      debugPrint('Warning: Failed to retrieve auth token from secure storage: $e');
+      // On web/desktop, secure storage might throw PlatformException
+      // Fall back to regular SharedPreferences
+    }
+
+    // Fallback: try to get from regular SharedPreferences
+    try {
+      final prefs = await _prefs;
+      return prefs.getString(_authTokenKey);
+    } catch (e) {
+      debugPrint('Error: Failed to retrieve auth token from SharedPreferences: $e');
+      return null;
+    }
   }
 
   Future<void> clearAuthToken() async {
-    await _secureStorage.delete(key: _authTokenKey);
+    try {
+      await _secureStorage.delete(key: _authTokenKey);
+    } catch (e) {
+      debugPrint('Warning: Failed to clear auth token from secure storage: $e');
+    }
+
+    // Also clear from SharedPreferences
+    try {
+      final prefs = await _prefs;
+      await prefs.remove(_authTokenKey);
+    } catch (e) {
+      debugPrint('Error: Failed to clear auth token from SharedPreferences: $e');
+    }
   }
 
   // Convenience for logout
