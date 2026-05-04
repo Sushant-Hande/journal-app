@@ -76,9 +76,23 @@ class AuthViewModel extends ChangeNotifier {
         return false;
       }
 
-      await _localStorageService.saveAuthToken(token);
-      await _localStorageService.setIsLoggedIn(true);
-      await _localStorageService.setUserName(userName);
+      try {
+        await _localStorageService.saveAuthToken(token);
+      } catch (e) {
+        _loginApiStatus = ApiStatus.error;
+        _loginErrorMessage = 'Failed to save authentication token: ${e.toString()}';
+        notifyListeners();
+        return false;
+      }
+
+      try {
+        await _localStorageService.setIsLoggedIn(true);
+        await _localStorageService.setUserName(userName);
+      } catch (e) {
+        // Log the error but don't fail login if user data storage fails
+        debugPrint('Warning: Failed to save user data: $e');
+      }
+
       _loginApiStatus = ApiStatus.success;
       notifyListeners();
       return true;
