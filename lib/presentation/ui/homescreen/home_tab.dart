@@ -53,7 +53,7 @@ class _HomeTabState extends State<HomeTab> {
           ListView.separated(
             physics: const AlwaysScrollableScrollPhysics(),
             padding: const EdgeInsets.all(16),
-            separatorBuilder: (_, __) => const SizedBox(height: 12),
+            separatorBuilder: (_, _) => const SizedBox(height: 12),
             itemCount: vm.journals.length,
             itemBuilder: (context, index) {
               final journal = vm.journals[index];

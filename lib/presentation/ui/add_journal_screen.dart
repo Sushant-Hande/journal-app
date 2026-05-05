@@ -107,6 +107,7 @@ class _AddJournalScreenState extends State<AddJournalScreen> {
                               title: title,
                               content: description,
                             );
+                            if (!context.mounted) return;
                             if (journalEntry != null) {
                               // Return the newly created journal entry to the caller
                               Navigator.pop(context, journalEntry);
