@@ -1,0 +1,47 @@
+name: Flutter PR Validation
+
+on:
+  pull_request:
+    branches: [ master, develop ]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  FLUTTER_VERSION: '3.41.6'
+
+jobs:
+  analyze:
+    name: Analyze & Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Analyze code
+        run: flutter analyze
+
+      - name: Install lcov
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lcov
+
+      - name: Run tests with coverage
+        run: flutter test --coverage
+
+      - name: Log test coverage
+        run: |
+          if [ -f coverage/lcov.info ]; then
+            echo "Coverage summary:"
+            lcov --summary coverage/lcov.info
+          else
+            echo "Coverage file not found; no coverage data was generated."
+          fi
+
