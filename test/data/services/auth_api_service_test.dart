@@ -1,8 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:journal_app/data/services/auth_api_service.dart';
-import 'package:journal_app/network/api_error.dart';
-import 'package:journal_app/network/api_result.dart';
 import 'package:mocktail/mocktail.dart';
 
 // Create a Mock class for Dio
