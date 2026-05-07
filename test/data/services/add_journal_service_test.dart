@@ -1,9 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:journal_app/data/models/journal_entry.dart';
 import 'package:journal_app/data/services/add_journal_service.dart';
-import 'package:journal_app/network/dio_error_mapper.dart';
 
 import '../../test_helpers.dart';
 
@@ -53,7 +51,7 @@ void main() {
         expect(result.data?.content, 'This is a test entry');
         expect(result.error, null);
         verify(() => mockDio.post(
-          any(),
+          any(that: contains(TestConstants.testUserName)),
           data: {'title': 'Test Journal', 'content': 'This is a test entry'},
         )).called(1);
       });
@@ -108,7 +106,6 @@ void main() {
 
       test('maps DioException to ApiError with proper message', () async {
         // Arrange
-        final dio = Dio();
         when(() => mockDio.post(
           any(),
           data: any(named: 'data'),
@@ -130,7 +127,7 @@ void main() {
         // Assert
         expect(result.isSuccess, false);
         expect(result.error, isNotNull);
-        expect(result.error?.message, isNotEmpty);
+        expect(result.error?.message, 'Connection timeout. Please try again.');
       });
 
       test('maps DioException with badResponse (401) correctly', () async {
@@ -160,6 +157,7 @@ void main() {
         // Assert
         expect(result.isSuccess, false);
         expect(result.error?.statusCode, 401);
+        expect(result.error?.message, 'Unauthorized. Please login again.');
       });
 
       test('returns failure with default message on generic exception', () async {
