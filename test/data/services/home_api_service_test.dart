@@ -48,6 +48,7 @@ void main() {
       expect(result.data, isNotNull);
       expect(result.data!.length, 2);
       expect(result.data!.first.title, 'Entry 1');
+      verify(() => mockDio.get(any(that: contains(TestConstants.testUserName)))).called(1);
     });
 
     test('returns failure when response is not a list', () async {
@@ -64,6 +65,7 @@ void main() {
       // Assert
       expect(result.isSuccess, false);
       expect(result.error?.message, contains('Invalid response format'));
+      verify(() => mockDio.get(any(that: contains(TestConstants.testUserName)))).called(1);
     });
 
     test('maps DioException to ApiError via DioErrorMapper', () async {
