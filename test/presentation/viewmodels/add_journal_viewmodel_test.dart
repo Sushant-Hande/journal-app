@@ -169,7 +169,7 @@ void main() {
         expect(viewModel.addJournalApiStatus, ApiStatus.success);
       });
 
-      test('returns null and sets error when repository returns empty result', () async {
+      test('returns null and sets error when repository returns a failure', () async {
         // Arrange
         when(() => mockLocalStorageService.getUserName())
             .thenAnswer((_) async => TestConstants.testUserName);
